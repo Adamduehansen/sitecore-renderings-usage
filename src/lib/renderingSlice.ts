@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { RootState } from './store';
 
 interface Rendering {
   id: number;
@@ -69,5 +70,27 @@ const renderingSlice = createSlice({
 });
 
 export const { addRendering } = renderingSlice.actions;
+
+export interface SelectedRendering {
+  id: number;
+  renderingName: string;
+  count: number;
+  urls: string[];
+}
+
+export function selectRenderings({ reducer }: RootState): SelectedRendering[] {
+  return reducer.rendering.map(
+    ({ renderingName, count, id }): SelectedRendering => {
+      return {
+        id: id,
+        renderingName: renderingName,
+        count: count,
+        urls: reducer.urls
+          .filter((url) => url.renderingId === id)
+          .map((url) => url.url),
+      };
+    }
+  );
+}
 
 export default renderingSlice.reducer;
