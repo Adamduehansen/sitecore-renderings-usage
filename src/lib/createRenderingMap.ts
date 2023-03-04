@@ -8,7 +8,7 @@ export interface RenderingCount {
 }
 
 export interface Placeholders {
-  [key: string]: Rendering;
+  [key: string]: Rendering[];
 }
 
 export type RenderingMap = Map<string, number>;
@@ -28,7 +28,9 @@ function reduceRenderingsToMap(
   }
 
   if (placeholders !== undefined) {
-    return Object.values(placeholders).reduce(reduceRenderingsToMap, map);
+    return Object.values(placeholders)
+      .flat()
+      .reduce(reduceRenderingsToMap, map);
   }
 
   return map;
@@ -37,8 +39,7 @@ function reduceRenderingsToMap(
 export default function createRenderingMap(
   placeholders: Placeholders
 ): RenderingMap {
-  return Object.values(placeholders).reduce(
-    reduceRenderingsToMap,
-    new Map<string, number>()
-  );
+  return Object.values(placeholders)
+    .flat()
+    .reduce(reduceRenderingsToMap, new Map<string, number>());
 }
