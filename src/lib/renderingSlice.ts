@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from './store';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { RootState } from "./store";
 
 interface Rendering {
   id: number;
@@ -13,12 +13,12 @@ interface Url {
 }
 
 export interface RenderingState {
-  rendering: Rendering[];
+  renderings: Rendering[];
   urls: Url[];
 }
 
 const initialStore: RenderingState = {
-  rendering: [],
+  renderings: [],
   urls: [],
 };
 
@@ -33,7 +33,7 @@ function addRenderingReducer(
 ) {
   const { renderingName, url } = action.payload;
 
-  const existingRendering = state.rendering.find(
+  const existingRendering = state.renderings.find(
     (rendering) => rendering.renderingName === renderingName
   );
 
@@ -45,11 +45,11 @@ function addRenderingReducer(
     });
   } else {
     const id = Math.max(
-      ...state.rendering.map((rendering) => rendering.id + 1),
+      ...state.renderings.map((rendering) => rendering.id + 1),
       0
     );
 
-    state.rendering.push({
+    state.renderings.push({
       id: id,
       renderingName: renderingName,
       count: 1,
@@ -62,7 +62,7 @@ function addRenderingReducer(
 }
 
 const renderingSlice = createSlice({
-  name: 'rendering',
+  name: "rendering",
   initialState: initialStore,
   reducers: {
     addRendering: addRenderingReducer,
@@ -79,7 +79,7 @@ export interface SelectedRendering {
 }
 
 export function selectRenderings({ reducer }: RootState): SelectedRendering[] {
-  return reducer.rendering.map(
+  return reducer.renderings.map(
     ({ renderingName, count, id }): SelectedRendering => {
       return {
         id: id,
